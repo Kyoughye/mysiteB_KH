@@ -124,7 +124,7 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 			 } else {
 				 
 				 String query = "select qna.* "
-				 		+ "from(\r\n"
+				 		+ "from( "
 				 		+ "select rownum num, qn.* "
 				 		+ "from (select q.*, m.memName "
 				 		+ "from qnaboard q, regmember m "
@@ -238,8 +238,9 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 		 try {
 			 conn = getConnection();
 			 
-			 String query = "select * from qnaboard  "
-			 		+ " where qnano= ? ";
+			 String query = "select q.*, m.memName "
+			 		+ "from qnaboard q, regmember m "
+			 		+ "where q.memno = m.memno and qnano = ? ";
 			 pstmt = conn.prepareStatement(query);
 			 pstmt.setInt(1,  no);
 			 
@@ -249,12 +250,15 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 			
 				 vo.setQnaNo(rs.getInt("qnano"));
 				 vo.setMemNo(rs.getInt("memno"));
+				 vo.setMemName(rs.getString("memname"));
 				 vo.setNickname(rs.getString("nickname"));
 				 vo.setPass(rs.getString("pass"));
 				 vo.setTitle(rs.getString("title"));
 				 vo.setType(rs.getString("type"));
 				 vo.setContent(rs.getString("content"));
 				 vo.setRegDate(rs.getString("regdate"));
+			
+				 System.out.println(vo.toString());
 		 
 		 }
 		 } catch (SQLException e) {
@@ -282,13 +286,15 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 			 conn = getConnection();
 			 
 			 String query = "update qnaboard "
-			 		+ "set title= ? , content = ? "
+			 		+ "set title= ? , type= ?, content = ? "
 			 		+ "where qnano = ? ";
 			 pstmt = conn.prepareStatement(query);
 			 
 			 pstmt.setString(1, vo.getTitle());
-			 pstmt.setString(2, vo.getContent());
-			 pstmt.setInt(3, vo.getQnaNo());
+			 pstmt.setString(2, vo.getType());
+			 pstmt.setString(3, vo.getContent());
+			 pstmt.setInt(4, vo.getQnaNo());
+			 
 			 
 			 count = pstmt.executeUpdate();
 			 

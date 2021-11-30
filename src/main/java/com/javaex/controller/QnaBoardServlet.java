@@ -56,16 +56,27 @@ public class QnaBoardServlet extends HttpServlet{
 		
 		} else if ("read".equals(actionName)) {
 			// 게시물 가져오기
-			int no = Integer.parseInt(request.getParameter("qnaNo"));
-			QnaBoardDao dao = new QnaBoardDaoImpl();
-			//dao.updateHit(no);
-			QnaBoardVo qnaboardVo = dao.getBoard(no);
-			
-			System.out.println(qnaboardVo.toString());
+			MemberVo authUser = getAuthUser(request);
+			if(authUser == null) {
+				
+				String password = request.getParameter("password");
+				//if(password.equals())
+				
+			} else {
+				
+				int no = Integer.parseInt(request.getParameter("qnaNo"));
+				QnaBoardDao dao = new QnaBoardDaoImpl();
+				//dao.updateHit(no);
+				QnaBoardVo qnaboardVo = dao.getBoard(no);
+				
+				System.out.println(qnaboardVo.toString());
 
-			// 게시물 화면에 보내기
-			request.setAttribute("QnaboardVo", qnaboardVo);
-			WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/view.jsp");
+				// 게시물 화면에 보내기
+				request.setAttribute("QnaboardVo", qnaboardVo);
+				WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/view.jsp");
+				
+			}
+			
 			
 		} else if ("modifyform".equals(actionName)) {
 			// 게시물 가져오기
@@ -79,10 +90,11 @@ public class QnaBoardServlet extends HttpServlet{
 		} else if ("modify".equals(actionName)) {
 			// 게시물 가져오기
 			String title = request.getParameter("title");
+			String type = request.getParameter("type");
 			String content = request.getParameter("content");
-			int qnano = Integer.parseInt(request.getParameter("qnano"));
+			int qnano = Integer.parseInt(request.getParameter("qnaNo"));
 			
-			QnaBoardVo vo = new QnaBoardVo(qnano, title, content);
+			QnaBoardVo vo = new QnaBoardVo(title, type,  content, qnano);
 			QnaBoardDao dao = new QnaBoardDaoImpl();
 			
 			dao.update(vo);
@@ -91,63 +103,42 @@ public class QnaBoardServlet extends HttpServlet{
 		} else if ("writeform".equals(actionName)) {
 			
 			WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/write.jsp");
-		} else if ("memwrite".equals(actionName)) {
+		} else if ("write".equals(actionName)) {
 			
 			MemberVo authUser = getAuthUser(request);
-			int memNo = authUser.getMemNo();
-//			int memNo;
-//			if(authUser.getMemNo() != 0 ) {
-//				memNo = authUser.getMemNo();
-//			} else {
-//				memNo =0;
-//			}
-			
-//			if(authUser == null) {
-//				memNo = 0;
-//				String nickname = request.getParameter("nickname");
-//				String password = request.getParameter("pass");
-//				
-//		
-//			} else {
-//				memNo = authUser.getMemNo();
-//				String nickname= null;
-//				String password = null;
-//				
-//				System.out.println("memNo : ["+memNo+"]");
-//			}
-//						
-//			int memNo = Integer.parseInt(request.getParameter("memNo"));
-			
-			
-			
-			
-			
-			//String nickname = request.getParameter("nickname");
-			//String password = request.getParameter("password");
-			String type = request.getParameter("type");
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
-			
-			
-			System.out.println("memNo : ["+memNo+"]");
-			System.out.println("title : ["+title+"]");
-			System.out.println("content : ["+content+"]");
-			
-
-			QnaBoardVo vo = new QnaBoardVo(memNo, title, type, content);
-			QnaBoardDao dao = new QnaBoardDaoImpl();
-			dao.insert(vo);
-			System.out.println(vo.toString());
-			
-			
-			
+			if(authUser == null) {
+				
+				String nickname = request.getParameter("nickname");
+				String password = request.getParameter("password");
+				String type = request.getParameter("type");
+				String title = request.getParameter("title");
+				String content = request.getParameter("content");
+				
+				QnaBoardVo vo = new QnaBoardVo(nickname, password, title, type, content);
+				QnaBoardDao dao = new QnaBoardDaoImpl();
+				dao.insert(vo);
+				System.out.println(vo.toString());
+				
+				
+			} else {
+				int memNo = authUser.getMemNo();
+				//System.out.println("memNo : ["+memNo+"]");
+				String type = request.getParameter("type");
+				String title = request.getParameter("title");
+				String content = request.getParameter("content");
+				
+				QnaBoardVo vo = new QnaBoardVo(memNo, title, type, content);
+				QnaBoardDao dao = new QnaBoardDaoImpl();
+				dao.insert(vo);
+				System.out.println(vo.toString());
+				
+			}		
 			
 			WebUtil.redirect(request, response, "/mysiteB/qna?a=list");
-
-			
+		
 			
 		} else if ("delete".equals(actionName)) {
-			int qnano = Integer.parseInt(request.getParameter("qnano"));
+			int qnano = Integer.parseInt(request.getParameter("qnaNo"));
 
 			QnaBoardDao dao = new QnaBoardDaoImpl();
 			dao.delete(qnano);

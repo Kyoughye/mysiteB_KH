@@ -93,6 +93,23 @@ public class QnaBoardVo {
 	}
 	
 	
+	
+	
+	public QnaBoardVo(String nickname, String pass, String title, String type, String content) {
+	super();
+	this.nickname = nickname;
+	this.pass = pass;
+	this.title = title;
+	this.type = type;
+	this.content = content;
+}
+	public QnaBoardVo( String title, String type, String content, int qnaNo) {
+	super();
+	this.qnaNo = qnaNo;
+	this.title = title;
+	this.type = type;
+	this.content = content;
+}
 	public QnaBoardVo(int memNo, String title, String type, String content) {
 		super();
 		this.memNo = memNo;

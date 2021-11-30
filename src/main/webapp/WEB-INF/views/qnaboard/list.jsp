@@ -67,7 +67,7 @@
 								<c:forEach items="${list}" var="vo">
 									<tr>
 										<td>${vo.qnaNo}</td>
-										<td><a href="/mysiteB/qna?a=read&no={vo.qnaNo}">${vo.title}</td>
+										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
 										<c:if test="${vo.memNo != 0 }">
 										<td>${vo.memName}</td>
 										</c:if>

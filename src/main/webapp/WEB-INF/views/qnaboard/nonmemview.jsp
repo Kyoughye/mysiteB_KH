@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<% pageContext.setAttribute( "newLine", "\n" ); %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -24,43 +26,55 @@
 			<!-- One -->
 			<section id="one">
 				<div class="inner">
-
+					<header class="major">
+						<h1>문의하세요</h1>
+					</header>
 
 					<form>
-						
-							<header class="major">
-								<h1>제목 나오기</h1>
 
-							</header>
-
-
+								<h3>제목	${	QnaboardVo.title }</h3>
+					
 							<div class="col-6 col-12-small">
 								<ul class="actions stacked">
-									<li style="text-align: right"><a href="/mysiteB/user?a=questlist"
-										class="button small">이전으로</a></li>
+									<li style="text-align: right"><a href="/mysiteB/qna?a=list"
+										class="button small">목록으로</a></li>
 								</ul>
 							</div>
 
 					
-						<h3>작성자</h3>
+						<h3>작성자 ${QnaboardVo.memName}</h3>
+						
 
 						<div class="box">
-							<p>여기 내용 나오는 곳.</p>
+							<p>${fn:replace(QnaboardVo.content, newLine,"<br>") }</p>
 						</div>
 
 						
 						<div class="col-6 col-12-medium">
 						</div>
 						<div class="col-6 col-12-medium">
+						
 						<div class="row">
+														<c:if test="${authUser.memNo == null && QnaboardVo.memNo == 0 }">
+										<div class="field half">
+											<label for="pass">비밀번호</label>
+											<input type="password" name="password" id="pass" placeholder="비밀번호를 입력해주세요"/>
+										</div>
+										</c:if>
+						
+						
 														<div class="col-6 col-12-xsmall">
 															<ul class="actions stacked">
-																<li><a href="#" class="button">수정하러 가기</a></li>
+																<c:if test="${authUser.memNo == QnaboardVo.memNo || QnaboardVo.memNo == 0}">
+																<li><a href="/mysiteB/qna?a=modifyform&qnaNo=${QnaboardVo.qnaNo}" class="button">글수정</a></li>
+																</c:if>
 																</ul>
 														</div>
 														<div class="col-6 col-12-xsmall">
 															<ul class="actions stacked">
-																<li><a href="#" class="button primary">삭제</a></li>
+																<c:if test="${authUser.memNo == QnaboardVo.memNo || QnaboardVo.memNo == 0}">
+																<li><a href="/mysiteB/qna?a=delete&qnaNo=${QnaboardVo.qnaNo}" class="button primary">글삭제</a></li>
+																</c:if>
 																</ul>
 														</div>
 													</div>

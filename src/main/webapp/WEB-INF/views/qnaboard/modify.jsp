@@ -9,7 +9,7 @@
 -->
 <html>
 	<head>
-		<title>문의글 남기기</title>
+		<title>문의글 수정하기</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -28,10 +28,17 @@
 						<div class="inner">
 							<section>
 								<form method="post" action="/mysiteB/qna">
-								<input type="hidden" name="a" value="write" />
-								<div class="fields">
+								<c:if test="${authUser.memNo != 0 }">
+								<input type="hidden" name="a" value="modify" />
+								<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+								</c:if>
+								<c:if test="${authUser.memNo == 0 }">
+								<input type="hidden" name="a" value="nonmemwrite" />
+								</c:if>
+							
+									<div class="fields">
 									
-										<c:if test="${authUser.memNo == null }">
+										<c:if test="${authUser.memNo == 0 }">
 										<div class="field half">
 											<label for="name">닉네임</label>
 											<input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력해주세요" />
@@ -41,7 +48,7 @@
 										<c:if test="${authUser.memNo != null }">
 										<div class="field half">
 											<label for="name">작성자</label>
-											<input type="text" name="memName" id="memName" value= ${authUser.memName} />
+											<input type="text" name="memName" id="memName" value= "${authUser.memName}" />
 										</div>
 										</c:if>
 										
@@ -56,12 +63,12 @@
 										</div>
 										
 										<div class="field">
-											<label for="title">제목</label>
-											<input type="text" name="title" id="title" />
+											<label for="title">제목 </label>
+											<input type="text" name="title" id="title" value="${QnaboardVo.title }"></input>
 										</div>
 										<div class="field">
 											<label for="content">내용</label>
-											<textarea name="content" id="content" rows="6"></textarea>
+											<textarea name="content" id="content" rows="6">${QnaboardVo.content}</textarea>
 										</div>
 										
 										<c:if test="${authUser.memNo == null }">
