@@ -10,8 +10,7 @@
 <head>
 <title>문의글 게시판</title>
 <meta charset="UTF-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, user-scalable=no" />
+
 <link rel="stylesheet" href="assets/css/main.css" />
 <link rel="stylesheet" href="assets/css/noscript.css" />
 </head>
@@ -41,11 +40,11 @@
 					<input type = "hidden" name = "a" value="list">
 					<label class="hidden">검색 분류</label>
 					<select name="t" style="width:200px;height:50px;" >
-						<option ${param.t == "전체문의"?"selected":"" } value="전체문의">전체문의</option>
-						<option ${param.t == "회원문의"?"selected":"" } value="회원문의">회원문의</option>
-						<option ${param.t == "결제문의"?"selected":"" } value="결제문의">결제문의</option>
-						<option ${param.t == "배송문의"?"selected":"" } value="배송문의">배송문의</option>
-						<option ${param.t == "기타문의"?"selected":"" } value="기타문의">기타문의</option>
+						<option ${param.t == "전체 문의"?"selected":"" } value="전체 문의">전체 문의</option>
+						<option ${param.t == "회원 문의"?"selected":"" } value="회원 문의">회원 문의</option>
+						<option ${param.t == "결제 문의"?"selected":"" } value="결제 문의">결제 문의</option>
+						<option ${param.t == "배송 문의"?"selected":"" } value="배송 문의">배송 문의</option>
+						<option ${param.t == "기타 문의"?"selected":"" } value="기타 문의">기타 문의</option>
 					</select>				
 						<input type="submit" value="검색">
 					</form>
@@ -56,6 +55,7 @@
 							<thead>
 								<tr>
 									<th>번호</th>
+									<th>공개</th>
 									<th>제목</th>
 									<th>작성자</th>
 									<th>질문유형</th>
@@ -67,7 +67,30 @@
 								<c:forEach items="${list}" var="vo">
 									<tr>
 										<td>${vo.qnaNo}</td>
+										<c:if test="${vo.priv == 1 }">
+											<td>비공개</td>
+										</c:if>
+										<c:if test="${vo.priv == 0 }">
+											<td>공개</td>
+										</c:if>
+										
+										<c:if test="${vo.priv == 0 }">
 										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
+										</c:if>
+										
+										<c:if test="${vo.priv == 1 && vo.memNo == authUser.memNo && vo.memNo != 0}">
+										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
+										</c:if>
+										
+										<c:if test="${vo.priv == 1 && vo.memNo != authUser.memNo && vo.memNo != 0}">
+										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
+										</c:if>
+										
+										<c:if test="${vo.priv == 1 && vo.memNo == 0 }">
+										<td><a href="/mysiteB/qna?a=checkpass&qnaNo=${vo.qnaNo}">${vo.title}</a>
+										</td>
+										</c:if>
+										
 										<c:if test="${vo.memNo != 0 }">
 										<td>${vo.memName}</td>
 										</c:if>
@@ -76,6 +99,7 @@
 										</c:if>
 										<td>${vo.type}</td>
 										<td>${vo.regDate}</td>
+										
 									</tr>
 								</c:forEach>
 							</tbody>

@@ -10,7 +10,23 @@ public class QnaBoardVo {
 	private String type;
 	private String content;
 	private String regDate;
+	private int priv;
+	private int qnabCk;
+
 	
+	
+	public int getQnabCk() {
+		return qnabCk;
+	}
+	public void setQnabCk(int qnabCk) {
+		this.qnabCk = qnabCk;
+	}
+	public int getPriv() {
+		return priv;
+	}
+	public void setPriv(int priv) {
+		this.priv = priv;
+	}
 	public int getQnaNo() {
 		return qnaNo;
 	}
@@ -95,34 +111,39 @@ public class QnaBoardVo {
 	
 	
 	
-	public QnaBoardVo(String nickname, String pass, String title, String type, String content) {
+	public QnaBoardVo(String nickname, String pass, String title, String type, String content, int priv) {
 	super();
 	this.nickname = nickname;
 	this.pass = pass;
 	this.title = title;
 	this.type = type;
 	this.content = content;
+	this.priv = priv;
 }
-	public QnaBoardVo( String title, String type, String content, int qnaNo) {
+	public QnaBoardVo( String title, String type, String content, int qnaNo, int priv) {
 	super();
 	this.qnaNo = qnaNo;
 	this.title = title;
 	this.type = type;
 	this.content = content;
+	this.priv = priv;
 }
-	public QnaBoardVo(int memNo, String title, String type, String content) {
+	public QnaBoardVo(int memNo, String title, String type, String content, int priv) {
 		super();
 		this.memNo = memNo;
 		this.title = title;
 		this.type = type;
 		this.content = content;
+		this.priv = priv;
 	}
 	@Override
 	public String toString() {
 		return "QnaBoardVo [qnaNo=" + qnaNo + ", memNo=" + memNo + ", memName=" + memName + ", nickname=" + nickname
 				+ ", pass=" + pass + ", title=" + title + ", type=" + type + ", content=" + content + ", regDate="
-				+ regDate + "]";
+				+ regDate + ", priv=" + priv + ", qnabCk=" + qnabCk + "]";
 	}
+	
+	
 	
 	
 	

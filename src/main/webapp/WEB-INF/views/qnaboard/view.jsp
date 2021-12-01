@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <% pageContext.setAttribute( "newLine", "\n" ); %>
@@ -27,22 +27,22 @@
 			<section id="one">
 				<div class="inner">
 					<header class="major">
-						<h1>¹®ÀÇÇÏ¼¼¿ä</h1>
+						<h1>ë¬¸ì˜í•˜ì„¸ìš”</h1>
 					</header>
 
 					<form>
 
-								<h3>Á¦¸ñ	${	QnaboardVo.title }</h3>
+								<h3>ì œëª©	${	QnaboardVo.title }</h3>
 					
 							<div class="col-6 col-12-small">
 								<ul class="actions stacked">
 									<li style="text-align: right"><a href="/mysiteB/qna?a=list"
-										class="button small">¸ñ·ÏÀ¸·Î</a></li>
+										class="button small">ëª©ë¡ìœ¼ë¡œ</a></li>
 								</ul>
 							</div>
 
 					
-						<h3>ÀÛ¼ºÀÚ ${QnaboardVo.memName}</h3>
+						<h3>ì‘ì„±ì ${QnaboardVo.memName}</h3>
 						
 
 						<div class="box">
@@ -57,8 +57,8 @@
 						<div class="row">
 														<c:if test="${authUser.memNo == null && QnaboardVo.memNo == 0 }">
 										<div class="field half">
-											<label for="pass">ºñ¹Ğ¹øÈ£</label>
-											<input type="password" name="password" id="pass" placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"/>
+											<label for="pass">ë¹„ë°€ë²ˆí˜¸</label>
+											<input type="password" name="password" id="pass" placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"/>
 										</div>
 										</c:if>
 						
@@ -66,14 +66,14 @@
 														<div class="col-6 col-12-xsmall">
 															<ul class="actions stacked">
 																<c:if test="${authUser.memNo == QnaboardVo.memNo || QnaboardVo.memNo == 0}">
-																<li><a href="/mysiteB/qna?a=modifyform&qnaNo=${QnaboardVo.qnaNo}" class="button">±Û¼öÁ¤</a></li>
+																<li><a href="/mysiteB/qna?a=modifyform&qnaNo=${QnaboardVo.qnaNo}" class="button">ê¸€ìˆ˜ì •</a></li>
 																</c:if>
 																</ul>
 														</div>
 														<div class="col-6 col-12-xsmall">
 															<ul class="actions stacked">
 																<c:if test="${authUser.memNo == QnaboardVo.memNo || QnaboardVo.memNo == 0}">
-																<li><a href="/mysiteB/qna?a=delete&qnaNo=${QnaboardVo.qnaNo}" class="button primary">±Û»èÁ¦</a></li>
+																<li><a href="/mysiteB/qna?a=delete&qnaNo=${QnaboardVo.qnaNo}" class="button primary">ê¸€ì‚­ì œ</a></li>
 																</c:if>
 																</ul>
 														</div>

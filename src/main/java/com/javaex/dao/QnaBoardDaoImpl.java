@@ -32,7 +32,7 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 		 try {
 			 conn = getConnection();
 			 
-			 String query = "insert into qnaboard values (seq_qnaboard_no.nextval, ?, ?, ?, ?, ?, ?, sysdate )";
+			 String query = "insert into qnaboard values (seq_qnaboard_no.nextval, ?, ?, ?, ?, ?, ?, sysdate,?, 1 )";
 			 pstmt = conn.prepareStatement(query);
 			 
 			 pstmt.setInt(1, vo.getMemNo());
@@ -41,6 +41,8 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 			 pstmt.setString(4, vo.getTitle());
 			 pstmt.setString(5, vo.getType());
 			 pstmt.setString(6, vo.getContent());
+			 pstmt.setInt(7, vo.getPriv());
+			
 			 
 			 count = pstmt.executeUpdate();
 			 
@@ -73,7 +75,9 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 		 try {
 			 conn = getConnection();
 			 
-			 String query = "delete from qnaboard where qnano= ? ";
+			 String query = "update qnaboard "
+			 		+ "set qnabck=0 "
+			 		+ "where qnano = ? ";
 			 pstmt = conn.prepareStatement(query);
 			 
 			 pstmt.setInt(1, no);
@@ -106,15 +110,16 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 		 try {
 			 conn = getConnection();
 			 
-			 if(type.equals("전체문의")) {
+			 if(type.equals("전체 문의")) {
 			 
 			String query = "select qna.* "
 					+ "from( "
 					+ "select rownum num, qn.* "
 					+ "from (select q.*, m.memName "
-					+ "from qnaboard q, regmember m "
+					+ "from qnaboard q, regmember m  "
 					+ "where q.memno = m.memno "
-					+ "order by regdate desc) qn) qna "
+					+ "and qnabck=1 "
+					+ "order by qnano desc) qn) qna "
 					+ "where num between ? and ? ";
 
 			 pstmt = conn.prepareStatement(query);
@@ -123,14 +128,15 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 			 
 			 } else {
 				 
-				 String query = "select qna.* "
-				 		+ "from( "
-				 		+ "select rownum num, qn.* "
-				 		+ "from (select q.*, m.memName "
-				 		+ "from qnaboard q, regmember m "
-				 		+ "where q.memno = m.memno "
-				 		+ "and type like ? "
-				 		+ "order by regdate desc) qn) qna "
+				 String query = "select qna.*  "
+				 		+ "from(  "
+				 		+ "select rownum num, qn.*  "
+				 		+ "from (select q.*, m.memName  "
+				 		+ "from qnaboard q, regmember m  "
+				 		+ "where q.memno = m.memno  "
+				 		+ "and qnabck=1 "
+				 		+ "and type like ? "    
+				 		+ "order by qnano desc) qn) qna  "
 				 		+ "where num between ? and ? ";
 
 					 pstmt = conn.prepareStatement(query);
@@ -153,6 +159,8 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 				 vo.setType(rs.getString("type"));
 				 vo.setContent(rs.getString("content"));
 				 vo.setRegDate(rs.getString("regdate"));
+				 vo.setPriv(rs.getInt("priv"));
+				 vo.setQnabCk(rs.getInt("qnabck"));
 				 
 				 list.add(vo);
 			 }
@@ -173,7 +181,7 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 
 	@Override
 	public int getBoardCount() {
-		return getBoardCount("전체문의");
+		return getBoardCount("전체 문의");
 	}
 
 	@Override
@@ -187,9 +195,9 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 		 try {
 			 conn = getConnection();
 			 
-			 if(type.equals("전체문의")) {
+			 if(type.equals("전체 문의")) {
 			 
-			 String query = "select count(qnano) from qnaboard ";
+			 String query = "select count(qnano) from qnaboard where qnabck =1  ";
 			 
 			 pstmt = conn.prepareStatement(query);
 			 
@@ -200,7 +208,8 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 					 		+ "from( "
 					 		+ "select * from qnaboard "
 					 		+ "where type like ? "
-					 		+ "order by regdate desc)q) ";
+					 		+ "and qnabck= 1 "
+					 		+ "order by qnano desc)q) ";
 					 
 					 pstmt = conn.prepareStatement(query);
 					 pstmt.setString(1, "%"+type+"%" );			 
@@ -257,6 +266,8 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 				 vo.setType(rs.getString("type"));
 				 vo.setContent(rs.getString("content"));
 				 vo.setRegDate(rs.getString("regdate"));
+				 vo.setPriv(rs.getInt("priv"));
+				 vo.setQnabCk(rs.getInt("qnabck"));
 			
 				 System.out.println(vo.toString());
 		 
@@ -286,14 +297,16 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 			 conn = getConnection();
 			 
 			 String query = "update qnaboard "
-			 		+ "set title= ? , type= ?, content = ? "
+			 		+ "set title= ? , type= ?, content = ?, pass = ?,  priv= ? "
 			 		+ "where qnano = ? ";
 			 pstmt = conn.prepareStatement(query);
 			 
 			 pstmt.setString(1, vo.getTitle());
 			 pstmt.setString(2, vo.getType());
 			 pstmt.setString(3, vo.getContent());
-			 pstmt.setInt(4, vo.getQnaNo());
+			 pstmt.setString(4, vo.getPass());
+			 pstmt.setInt(5, vo.getPriv());
+			 pstmt.setInt(6, vo.getQnaNo());
 			 
 			 
 			 count = pstmt.executeUpdate();

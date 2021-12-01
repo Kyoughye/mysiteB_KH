@@ -80,8 +80,12 @@
 										
 									</div>
 									<ul class="actions">
-										<li><input type="submit" value="등록" class="primary" /></li>
+										<li><input type="submit" value="수정" class="primary" /></li>
 										<li><input type="reset" value="Clear" /></li>
+										<li><input type="checkbox" id="private" name="private" value="1">
+										<label for="private">비공개</label>
+										<input type="hidden" id="public" name="private" value="0">
+										</li>
 									</ul>
 								</form>
 							</section>

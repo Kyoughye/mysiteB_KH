@@ -33,7 +33,7 @@ public class QnaBoardServlet extends HttpServlet{
 			//String kwd = request.getParameter("kwd");
 			String pag = request.getParameter("p");
 			
-			String type = "전체문의";
+			String type = "전체 문의";
 			if(typ != null && !typ.equals("")) {
 				type = typ;
 			}
@@ -56,26 +56,35 @@ public class QnaBoardServlet extends HttpServlet{
 		
 		} else if ("read".equals(actionName)) {
 			// 게시물 가져오기
-			MemberVo authUser = getAuthUser(request);
-			if(authUser == null) {
-				
-				String password = request.getParameter("password");
-				//if(password.equals())
-				
-			} else {
-				
+//			MemberVo authUser = getAuthUser(request);
+//			if(authUser == null) {
+//				
+//				//String password = request.getParameter("password");
+//				//if(password.equals())
+//				
+//			} else {
+//				
 				int no = Integer.parseInt(request.getParameter("qnaNo"));
 				QnaBoardDao dao = new QnaBoardDaoImpl();
-				//dao.updateHit(no);
-				QnaBoardVo qnaboardVo = dao.getBoard(no);
-				
+//				//dao.updateHit(no);
+				QnaBoardVo qnaboardVo = dao.getBoard(no);	
 				System.out.println(qnaboardVo.toString());
-
-				// 게시물 화면에 보내기
+//				// 게시물 화면에 보내기
 				request.setAttribute("QnaboardVo", qnaboardVo);
 				WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/view.jsp");
-				
-			}
+//				
+//			}
+			
+		} else if ("checkpass".equals(actionName)) {
+			
+			int no = Integer.parseInt(request.getParameter("qnaNo"));
+			QnaBoardDao dao = new QnaBoardDaoImpl();
+			QnaBoardVo qnaboardVo = dao.getBoard(no);	
+			//System.out.println(qnaboardVo.toString());
+			request.setAttribute("QnaboardVo", qnaboardVo);
+			
+			WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/checkpass.jsp");
+		
 			
 			
 		} else if ("modifyform".equals(actionName)) {
@@ -93,8 +102,9 @@ public class QnaBoardServlet extends HttpServlet{
 			String type = request.getParameter("type");
 			String content = request.getParameter("content");
 			int qnano = Integer.parseInt(request.getParameter("qnaNo"));
+			int priv = Integer.parseInt(request.getParameter("private"));
 			
-			QnaBoardVo vo = new QnaBoardVo(title, type,  content, qnano);
+			QnaBoardVo vo = new QnaBoardVo(title, type,  content, qnano, priv);
 			QnaBoardDao dao = new QnaBoardDaoImpl();
 			
 			dao.update(vo);
@@ -113,8 +123,10 @@ public class QnaBoardServlet extends HttpServlet{
 				String type = request.getParameter("type");
 				String title = request.getParameter("title");
 				String content = request.getParameter("content");
+				int priv = Integer.parseInt(request.getParameter("private"));
 				
-				QnaBoardVo vo = new QnaBoardVo(nickname, password, title, type, content);
+				
+				QnaBoardVo vo = new QnaBoardVo(nickname, password, title, type, content, priv);
 				QnaBoardDao dao = new QnaBoardDaoImpl();
 				dao.insert(vo);
 				System.out.println(vo.toString());
@@ -126,8 +138,9 @@ public class QnaBoardServlet extends HttpServlet{
 				String type = request.getParameter("type");
 				String title = request.getParameter("title");
 				String content = request.getParameter("content");
+				int priv = Integer.parseInt(request.getParameter("private")); 
 				
-				QnaBoardVo vo = new QnaBoardVo(memNo, title, type, content);
+				QnaBoardVo vo = new QnaBoardVo(memNo, title, type, content, priv);
 				QnaBoardDao dao = new QnaBoardDaoImpl();
 				dao.insert(vo);
 				System.out.println(vo.toString());
