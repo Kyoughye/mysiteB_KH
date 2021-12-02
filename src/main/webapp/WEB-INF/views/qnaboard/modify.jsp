@@ -9,11 +9,25 @@
 -->
 <html>
 	<head>
-		<title>문의글 수정하기</title>
+		<title>문의글 남기기</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/noscript.css" />
+		
+		<script>
+		function check_pw(){
+			var f = document.form;
+			if(f.password.value == ""){
+				alert("비밀번호를 입력해주세요");
+				f.password.focus();
+				return false;
+			}
+			f.submit();
+		}
+		
+		</script>
+		
 	</head>
 	<body class="is-preload">
 
@@ -27,18 +41,11 @@
 					<section id="contact">
 						<div class="inner">
 							<section>
-								<form method="post" action="/mysiteB/qna">
-								<c:if test="${authUser.memNo != 0 }">
-								<input type="hidden" name="a" value="modify" />
-								<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
-								</c:if>
-								<c:if test="${authUser.memNo == 0 }">
-								<input type="hidden" name="a" value="nonmemwrite" />
-								</c:if>
-							
-									<div class="fields">
+								<form name="form" method="post" action="/mysiteB/qna">
+								<input type="hidden" name="a" value="write" />
+								<div class="fields">
 									
-										<c:if test="${authUser.memNo == 0 }">
+										<c:if test="${authUser.memNo == null }">
 										<div class="field half">
 											<label for="name">닉네임</label>
 											<input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력해주세요" />
@@ -48,23 +55,23 @@
 										<c:if test="${authUser.memNo != null }">
 										<div class="field half">
 											<label for="name">작성자</label>
-											<input type="text" name="memName" id="memName" value= "${authUser.memName}" />
+											<input type="text" name="memName" id="memName" value= ${authUser.memName} />
 										</div>
 										</c:if>
 										
 										<div class="field half">
 											<label for="type">질문 유형</label>
 											<select name="type">
-												<option value="회원 문의">회원 문의</option>
-												<option value="결제 문의">결제 문의</option>
-												<option value="배송 문의">배송 문의</option>
-												<option value="기타 문의">기타 문의</option>
+												<option ${QnaboardVo.type == "회원 문의"?"selected":"" } value="회원 문의">회원 문의</option>
+												<option ${QnaboardVo.type == "결제 문의"?"selected":"" } value="결제 문의">결제 문의</option>
+												<option ${QnaboardVo.type == "배송 문의"?"selected":"" } value="배송 문의">배송 문의</option>
+												<option ${QnaboardVo.type == "기타 문의"?"selected":"" } value="기타 문의">기타 문의</option>
 											</select>
 										</div>
 										
 										<div class="field">
-											<label for="title">제목 </label>
-											<input type="text" name="title" id="title" value="${QnaboardVo.title }"></input>
+											<label for="title">제목</label>
+											<input type="text" name="title" id="title" value="${QnaboardVo.title}" />
 										</div>
 										<div class="field">
 											<label for="content">내용</label>
@@ -74,19 +81,29 @@
 										<c:if test="${authUser.memNo == null }">
 										<div class="field half">
 											<label for="pass">비밀번호</label>
-											<input type="password" name="password" id="pass" placeholder="비밀번호를 입력해주세요"/>
+											<input type="password" name="password" id="pass" value="" placeholder="비밀번호를 입력해주세요"/>
+											<ul class="actions">
+											<li><input type="button" value="등록" class="primary" onclick="check_pw()" /></li>
+											<li><input type="reset" value="Clear" /></li>
+											<li><input type="checkbox" id="private" name="private" value="1">
+											<label for="private">비공개</label>
+											<input type="hidden" id="public" name="private" value="0">
+											</li>
+									</ul>
 										</div>
 										</c:if>
-										
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="수정" class="primary" /></li>
+									
+										<c:if test="${authUser.memNo != null }">
+										<ul class="actions">
+										<li><input type="submit" value="등록" class="primary" /></li>
 										<li><input type="reset" value="Clear" /></li>
 										<li><input type="checkbox" id="private" name="private" value="1">
 										<label for="private">비공개</label>
 										<input type="hidden" id="public" name="private" value="0">
 										</li>
-									</ul>
+										</ul>
+										</c:if>		
+									</div>	
 								</form>
 							</section>
 							<section class="split">

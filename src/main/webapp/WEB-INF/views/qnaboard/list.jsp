@@ -78,16 +78,16 @@
 										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 1 && vo.memNo == authUser.memNo && vo.memNo != 0}">
+										<c:if test="${vo.priv == 1 && (vo.memNo == authUser.memNo) && (vo.memNo != 0)}">
 										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 1 && vo.memNo != authUser.memNo && vo.memNo != 0}">
-										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
+										<c:if test="${vo.priv == 1 && (vo.memNo != authUser.memNo) && (vo.memNo != 0)}">
+										<td>${vo.title}</td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 1 && vo.memNo == 0 }">
-										<td><a href="/mysiteB/qna?a=checkpass&qnaNo=${vo.qnaNo}">${vo.title}</a>
+										<c:if test="${vo.priv == 1 && (vo.memNo == 0) }">
+										<td><a href="/mysiteB/qna?a=checkpassform&qnaNo=${vo.qnaNo}">${vo.title}</a>
 										</td>
 										</c:if>
 										

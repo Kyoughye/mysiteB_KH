@@ -34,7 +34,7 @@
 					
 						<h3>비공개 글입니다. 비밀번호를 입력하세요</h3>
 						
-						<form name="form" id="pass_form" action="/mysiteB/qna?a=checkpass" method="post" >
+						<form name="form" id="pass_form" action="/mysiteB/qna?a=modify" method="post" >
 						<input type="hidden" name="qnapass" value="${QnaboardVo.pass }"/>
 						<input type="password" name="password" value=""/>
 						<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>

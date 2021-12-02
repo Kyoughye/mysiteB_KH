@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -66,7 +67,6 @@ public class QnaBoardServlet extends HttpServlet{
 //				
 				int no = Integer.parseInt(request.getParameter("qnaNo"));
 				QnaBoardDao dao = new QnaBoardDaoImpl();
-//				//dao.updateHit(no);
 				QnaBoardVo qnaboardVo = dao.getBoard(no);	
 				System.out.println(qnaboardVo.toString());
 //				// 게시물 화면에 보내기
@@ -75,18 +75,43 @@ public class QnaBoardServlet extends HttpServlet{
 //				
 //			}
 			
-		} else if ("checkpass".equals(actionName)) {
+		} else if ("checkpassform".equals(actionName)) {
 			
 			int no = Integer.parseInt(request.getParameter("qnaNo"));
 			QnaBoardDao dao = new QnaBoardDaoImpl();
-			QnaBoardVo qnaboardVo = dao.getBoard(no);	
-			//System.out.println(qnaboardVo.toString());
+			QnaBoardVo qnaboardVo = dao.getBoard(no);
+			System.out.println(qnaboardVo.toString());
 			request.setAttribute("QnaboardVo", qnaboardVo);
 			
 			WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/checkpass.jsp");
+			
+		} else if("checkpass".equals(actionName)) {
+			
+			String password = request.getParameter("password");
+			String qnapass = request.getParameter("qnapass");
+			System.out.println(password);
+			System.out.println(qnapass);
+			int qnano = Integer.parseInt(request.getParameter("qnaNo"));
+			String qnaNo = request.getParameter("qnaNo");
+			
+			if(!qnapass.equals(password) ) {
+				response.setContentType("text/html; charset=UTF-8" );
+				PrintWriter writer = response.getWriter();
+				writer.println("<script>alert('비밀번호를 확인해주세요.'); history.back();</script>");
+				writer.close();
+				return;
+			} 
+			QnaBoardDao dao = new QnaBoardDaoImpl();
+			QnaBoardVo vo = dao.getBoard(qnano, password);
+			
+			System.out.println(vo);
+            System.out.println("성공");
+            request.setAttribute("QnaboardVo", vo);
+            
+            WebUtil.forward(request, response, "WEB-INF/views/qnaboard/view.jsp");
+
 		
-			
-			
+			  
 		} else if ("modifyform".equals(actionName)) {
 			// 게시물 가져오기
 			int no = Integer.parseInt(request.getParameter("qnaNo"));
@@ -96,6 +121,17 @@ public class QnaBoardServlet extends HttpServlet{
 			// 게시물 화면에 보내기
 			request.setAttribute("QnaboardVo", qnaboardVo);
 			WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/modify.jsp");
+		} else if ("checkpassmodifyform".equals(actionName)) {
+			
+			int no = Integer.parseInt(request.getParameter("qnaNo"));
+			QnaBoardDao dao = new QnaBoardDaoImpl();
+			QnaBoardVo qnaboardVo = dao.getBoard(no);
+			System.out.println(qnaboardVo.toString());
+			request.setAttribute("QnaboardVo", qnaboardVo);
+			
+			WebUtil.forward(request, response, "/WEB-INF/views/qnaboard/checkpassmodify.jsp");
+			
+			
 		} else if ("modify".equals(actionName)) {
 			// 게시물 가져오기
 			String title = request.getParameter("title");
@@ -124,7 +160,6 @@ public class QnaBoardServlet extends HttpServlet{
 				String title = request.getParameter("title");
 				String content = request.getParameter("content");
 				int priv = Integer.parseInt(request.getParameter("private"));
-				
 				
 				QnaBoardVo vo = new QnaBoardVo(nickname, password, title, type, content, priv);
 				QnaBoardDao dao = new QnaBoardDaoImpl();

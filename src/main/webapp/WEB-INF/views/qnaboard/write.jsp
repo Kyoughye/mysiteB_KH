@@ -14,6 +14,20 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/noscript.css" />
+		
+		<script>
+		function check_pw(){
+			var f = document.form;
+			if(f.password.value == ""){
+				alert("비밀번호를 입력해주세요");
+				f.password.focus();
+				return false;
+			}
+			f.submit();
+		}
+		
+		</script>
+		
 	</head>
 	<body class="is-preload">
 
@@ -27,8 +41,9 @@
 					<section id="contact">
 						<div class="inner">
 							<section>
-								<form method="post" action="/mysiteB/qna">
+								<form name="form" method="post" action="/mysiteB/qna">
 								<input type="hidden" name="a" value="write" />
+								
 								<div class="fields">
 									
 										<c:if test="${authUser.memNo == null }">
@@ -67,19 +82,29 @@
 										<c:if test="${authUser.memNo == null }">
 										<div class="field half">
 											<label for="pass">비밀번호</label>
-											<input type="password" name="password" id="pass" placeholder="비밀번호를 입력해주세요"/>
+											<input type="password" name="password" id="pass" value="" placeholder="비밀번호를 입력해주세요"/>
+											<ul class="actions">
+											<li><input type="button" value="등록" class="primary" onclick="check_pw()" /></li>
+											<li><input type="reset" value="Clear" /></li>
+											<li><input type="checkbox" id="private" name="private" value="1">
+											<label for="private">비공개</label>
+											<input type="hidden" id="public" name="private" value="0">
+											</li>
+									</ul>
 										</div>
 										</c:if>
-										
-									</div>
-									<ul class="actions">
+									
+										<c:if test="${authUser.memNo != null }">
+										<ul class="actions">
 										<li><input type="submit" value="등록" class="primary" /></li>
 										<li><input type="reset" value="Clear" /></li>
 										<li><input type="checkbox" id="private" name="private" value="1">
 										<label for="private">비공개</label>
 										<input type="hidden" id="public" name="private" value="0">
 										</li>
-									</ul>
+										</ul>
+										</c:if>		
+									</div>	
 								</form>
 							</section>
 							<section class="split">

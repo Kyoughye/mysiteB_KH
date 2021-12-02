@@ -269,7 +269,7 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 				 vo.setPriv(rs.getInt("priv"));
 				 vo.setQnabCk(rs.getInt("qnabck"));
 			
-				 System.out.println(vo.toString());
+				// System.out.println(vo.toString());
 		 
 		 }
 		 } catch (SQLException e) {
@@ -325,6 +325,59 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 			 }
 		 }
 		return count;
+	}
+
+
+	@Override
+	public QnaBoardVo getBoard(int qnano, String password) {
+		 Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 QnaBoardVo  vo = new QnaBoardVo();
+		 
+		 try {
+			 conn = getConnection();
+			 
+			 String query = "select q.*, m.memName from qnaboard q, regmember m  "
+			 		+ "where qnano = ?  "
+			 		+ "and pass = ? "
+			 		+ "and q.memno = m.memno ";
+			 
+			 pstmt = conn.prepareStatement(query);
+			 pstmt.setInt(1,  qnano);
+			 pstmt.setString(2, password);
+			 
+			 rs = pstmt.executeQuery();
+			 
+			 if(rs.next()) {
+			
+				 vo.setQnaNo(rs.getInt("qnano"));
+				 vo.setMemNo(rs.getInt("memno"));
+				 vo.setMemName(rs.getString("memname"));
+				 vo.setNickname(rs.getString("nickname"));
+				 vo.setPass(rs.getString("pass"));
+				 vo.setTitle(rs.getString("title"));
+				 vo.setType(rs.getString("type"));
+				 vo.setContent(rs.getString("content"));
+				 vo.setRegDate(rs.getString("regdate"));
+				 vo.setPriv(rs.getInt("priv"));
+				 vo.setQnabCk(rs.getInt("qnabck"));
+			
+				// System.out.println(vo.toString());
+		 
+		 }
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		return vo;
 	}
 
 }

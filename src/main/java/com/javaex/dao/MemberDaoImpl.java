@@ -116,10 +116,7 @@ public class MemberDaoImpl implements MemberDao {
 				vo.setMemJibun(memjibun);
 				vo.setMemAdd(memadd);
 				vo.setMemPhone(memphone);
-				
-				
-				
-				
+							
 				vo.setAdminCk(adminck);
 				vo.setMemCk(memck);
 			 }
