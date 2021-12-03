@@ -120,11 +120,12 @@ public class QnaBoardVo {
 	this.content = content;
 	this.priv = priv;
 }
-	public QnaBoardVo( String title, String type, String content, int qnaNo, int priv) {
+	public QnaBoardVo( String title, String type, String content, String pass, int qnaNo, int priv) {
 	super();
 	this.qnaNo = qnaNo;
 	this.title = title;
 	this.type = type;
+	this.pass = pass;
 	this.content = content;
 	this.priv = priv;
 }

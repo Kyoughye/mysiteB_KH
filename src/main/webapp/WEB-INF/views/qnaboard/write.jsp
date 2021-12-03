@@ -56,7 +56,7 @@
 										<c:if test="${authUser.memNo != null }">
 										<div class="field half">
 											<label for="name">작성자</label>
-											<input type="text" name="memName" id="memName" value= ${authUser.memName} />
+											<input type="text" name="memName" id="memName" value= ${authUser.memName} readonly />
 										</div>
 										</c:if>
 										

@@ -56,64 +56,83 @@
 							<p>${fn:replace(QnaboardVo.content, newLine,"<br>") }</p>
 						</div>
 
+						<div class="col-6 col-12-xsmall">
+						<form name="modifyform" method="post" action="/mysiteB/qna">
+							<ul class="actions stacked">
+								<c:if test="${(QnaboardVo.memNo != 0 && authUser.memNo == QnaboardVo.memNo) } ">
+									
+									<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+									<li><button class="button" type="submit"  name="a" value="modifyform" >글수정</button></li>
+									<li><button class="button primary" type="submit"  name="a" value="delete" >글삭제</button></li>
+								</c:if>
+							</ul>
+						</form>
 						
-						<div class="col-6 col-12-medium">
-						</div>
-						<div class="col-6 col-12-medium">
+						<form name="modifyform" method="post" action="/mysiteB/qna">
+							<ul class="actions stacked">
+								<c:if test="${QnaboardVo.memNo == 0 }">
+									<div class="field half">
+										<label for="pass">비밀번호</label>
+										<input type="password" name="password" value="" id="pass" placeholder="비밀번호를 입력해주세요"/>
+									
+									<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+									<input type="hidden" name="qnapass" value="${QnaboardVo.pass }"/>
+									<li><button class="button" type="submit" name="a" value="modifypass" >글수정</button></li>
+									<li><button class="button" type="submit"  name="a" value="deletepass" >글삭제</button></li>
+									</div>
+								</c:if>
+							</ul>
+						</form>					
 						
-						<div class="row">
-														<c:if test="${QnaboardVo.memNo == 0 }">
-										<div class="field half">
-											<label for="pass">비밀번호</label>
-											<input type="password" name="password" id="pass" placeholder="비밀번호를 입력해주세요"/>
-										</div>
-										</c:if>
 						
-						
-														<div class="col-6 col-12-xsmall">
-															<ul class="actions stacked">
-																<c:if test="${(QnaboardVo.memNo != 0 && authUser.memNo == QnaboardVo.memNo) }">
-																<input type="password" name="password" value=""/>
-																<form name="modifyform"  action="/mysiteB/qna?a=modifyform" method="post" >
-																<input type="hidden" name="qnapass" value="${QnaboardVo.pass }"/>
-																
-																<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
-																
-																<li><a class="button">글수정</a></li>
-																</form>
-																
-																
-																<form name="deleteform"  action="/mysiteB/qna?a=delete" method="post" >
-																<input type="hidden" name="qnapass" value="${QnaboardVo.pass }"/>
-																<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
-																
-																<li><a href="/mysiteB/qna?a=delete&qnaNo=${QnaboardVo.qnaNo}" class="button primary">글삭제</a></li>
-																</form>
-																</c:if>
-																
-																<c:if test="${QnaboardVo.memNo == 0}">
-																<li><a href="/mysiteB/qna?a=modifyform&qnaNo=${QnaboardVo.qnaNo}" class="button">글수정</a></li>
-																<li><a href="/mysiteB/qna?a=delete&qnaNo=${QnaboardVo.qnaNo}" class="button primary">글삭제</a></li>
-																</c:if>
-																
-															</ul>
-														</div>
-														<div class="col-6 col-12-xsmall">
-															<ul class="actions stacked">
-																<c:if test="${(QnaboardVo.memNo != 0 && authUser.memNo == QnaboardVo.memNo) || (authUser.memNo == null && QnaboardVo.memNo == 0 && QnaboardVo.pass == password) }">
-																<li><a href="/mysiteB/qna?a=delete&qnaNo=${QnaboardVo.qnaNo}" class="button primary">글삭제</a></li>
-																</c:if>
-																</ul>
-														</div>
-													</div>
-													</div>
-
-					</form>
-
-
+						</div>					
+						</div>			
 				</div>
-			</section>
-
+				
+			<table>
+				<tbody>
+						<th>
+						<tr>
+							<td style="font-size: 14px; width: 100px; text-align: center; vertical-align: middle"><b>↳답변</b></td>
+							<td style="font-size: 12px; width: 120px; text-align: center; vertical-align: middle"><b>작성자</b></td>
+							<td style="font-size: 12px; width: 200px; text-align: center; vertical-align: middle"><b>답변 내용</b></td>
+							<td style="font-size: 12px; width: 120px; text-align: center; vertical-align: middle"><b>날짜</b></td>
+						</tr>
+						
+						<c:forEach items="${list }" var="vo">
+							<br>
+						<tr>	
+							<td></td>
+							<td>판매자</td>
+							<td>${vo.answer }</td>
+							<td>${vo.regDate }</td>
+						</tr>
+						</c:forEach>
+						
+						</tbody>
+						
+						<c:if test="${authUser.adminCk == 1 }">
+						<form name="answerform" method="post" action="/mysiteB/qna">
+						<div class="field">
+							<label for="answer">답변</label>
+									<textarea name="answer" id="content" rows="6"></textarea>
+						</div>
+						
+						
+							<ul class="actions stacked">
+									<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+									<li><button class="button" type="submit"  name="a" value="writeAns" >답변달기</button></li>
+									</div>			
+							</ul>
+						</form>
+						</c:if>
+						
+							
+			</table>
+			
+						
+			
+			
 		</div>
 
 		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>

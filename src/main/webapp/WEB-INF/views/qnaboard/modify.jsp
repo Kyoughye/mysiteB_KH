@@ -42,20 +42,24 @@
 						<div class="inner">
 							<section>
 								<form name="form" method="post" action="/mysiteB/qna">
-								<input type="hidden" name="a" value="write" />
+								<input type="hidden" name="a" value="modify" />
+								<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+								
+								 
 								<div class="fields">
 									
-										<c:if test="${authUser.memNo == null }">
+										<c:if test="${QnaboardVo.pass != null }">
 										<div class="field half">
 											<label for="name">닉네임</label>
-											<input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력해주세요" />
+											<input type="text" name="nickname" id="nickname" value="${QnaboardVo.nickname}" readonly/>
+											
 										</div>
 										</c:if>
 										
-										<c:if test="${authUser.memNo != null }">
+										<c:if test="${QnaboardVo.pass == null }">
 										<div class="field half">
 											<label for="name">작성자</label>
-											<input type="text" name="memName" id="memName" value= ${authUser.memName} />
+											<input type="text" name="memName" id="memName" value= "${authUser.memName}" readonly/>
 										</div>
 										</c:if>
 										
@@ -78,12 +82,12 @@
 											<textarea name="content" id="content" rows="6">${QnaboardVo.content}</textarea>
 										</div>
 										
-										<c:if test="${authUser.memNo == null }">
+										<c:if test="${QnaboardVo.pass != null }">
 										<div class="field half">
 											<label for="pass">비밀번호</label>
 											<input type="password" name="password" id="pass" value="" placeholder="비밀번호를 입력해주세요"/>
 											<ul class="actions">
-											<li><input type="button" value="등록" class="primary" onclick="check_pw()" /></li>
+											<li><input type="button" value="수정" class="primary" onclick="check_pw()" /></li>
 											<li><input type="reset" value="Clear" /></li>
 											<li><input type="checkbox" id="private" name="private" value="1">
 											<label for="private">비공개</label>
@@ -93,9 +97,10 @@
 										</div>
 										</c:if>
 									
-										<c:if test="${authUser.memNo != null }">
+									
+										<c:if test="${QnaboardVo.pass == null }">
 										<ul class="actions">
-										<li><input type="submit" value="등록" class="primary" /></li>
+										<li><input type="submit" value="수정" class="primary" /></li>
 										<li><input type="reset" value="Clear" /></li>
 										<li><input type="checkbox" id="private" name="private" value="1">
 										<label for="private">비공개</label>

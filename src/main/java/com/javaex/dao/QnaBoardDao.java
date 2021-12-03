@@ -12,7 +12,6 @@ public interface QnaBoardDao {
 	public int getBoardCount(String type);
 	public QnaBoardVo getBoard(int no);
 	public int update(QnaBoardVo vo);
-	public QnaBoardVo getBoard(int qnano, String password);
 	
 
 }
