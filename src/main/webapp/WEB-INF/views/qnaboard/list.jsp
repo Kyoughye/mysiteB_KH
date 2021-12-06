@@ -74,24 +74,22 @@
 											<td>공개</td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 0 }">
+										<c:if test="${vo.priv == 0 && authUser.adminCk != 1 }">
 										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}
-										
-										
 										<span>[2]</span>
 										
 										</a></td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 1 && (vo.memNo == authUser.memNo) && (vo.memNo != 0)}">
+										<c:if test="${(vo.priv == 1 && vo.memNo == authUser.memNo && vo.memNo != 0) || authUser.adminCk == 1 }">
 										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}<span>[2]</span></a></td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 1 && (vo.memNo != authUser.memNo) && (vo.memNo != 0)}">
+										<c:if test="${(vo.priv == 1 && vo.memNo != authUser.memNo && vo.memNo != 0) && authUser.adminCk != 1  }">
 										<td>${vo.title}<span>[2]</span></td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 1 && (vo.memNo == 0) }">
+										<c:if test="${(vo.priv == 1 && vo.memNo == 0) && authUser.adminCk != 1  }">
 										<td><a href="/mysiteB/qna?a=checkpassform&qnaNo=${vo.qnaNo}">${vo.title}<span>[2]</span></a>
 										</td>
 										</c:if>

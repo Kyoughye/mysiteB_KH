@@ -102,7 +102,21 @@
 						<c:forEach items="${list }" var="vo">
 							<br>
 						<tr>	
+							<c:if test="${authUser.adminCk != 1 }">
 							<td></td>
+							</c:if>
+							
+							<c:if test="${authUser.adminCk == 1 }">
+							<td>
+							<form name="deleteanswerform" method="post" action="/mysiteB/qna">
+							<button class="button" type="submit" name="a" value="deleteAns" >삭제</button>
+							<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+							<input type="hidden" name="ansNo" value="${vo.ansNo }"/>
+							</form>
+							</td>
+							</c:if>
+							
+							
 							<td>판매자</td>
 							<td>${vo.answer }</td>
 							<td>${vo.regDate }</td>
@@ -116,11 +130,13 @@
 						<div class="field">
 							<label for="answer">답변</label>
 									<textarea name="answer" id="content" rows="6"></textarea>
+							<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+							<input type="hidden" name="memNo" value="${authUser.memNo }"/>
 						</div>
 						
 						
 							<ul class="actions stacked">
-									<input type="hidden" name="qnaNo" value="${QnaboardVo.qnaNo }"/>
+									
 									<li><button class="button" type="submit"  name="a" value="writeAns" >답변달기</button></li>
 									</div>			
 							</ul>

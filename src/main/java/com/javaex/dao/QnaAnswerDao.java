@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import com.javaex.vo.QnaAnswerVo;
 
 public interface QnaAnswerDao {
-	public ArrayList<QnaAnswerVo> getAnsList(int qnano);
+	public ArrayList<QnaAnswerVo> getAnsList(int qnaNo);
 	public int insertAns(QnaAnswerVo vo);
-	public int deleteAns(QnaAnswerVo vo);
-	public int updateAns(QnaAnswerVo vo);
+	public int deleteAns(int ansNo);
+	//public int updateAns(QnaAnswerVo vo);
 
 }

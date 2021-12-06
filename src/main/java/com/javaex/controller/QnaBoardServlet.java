@@ -54,6 +54,7 @@ public class QnaBoardServlet extends HttpServlet {
 			int count = dao.getBoardCount(type);
 			System.out.println(count);
 			System.out.println(list.toString());
+			
 
 			// 리스트 화면에 보내기
 			request.setAttribute("list", list);
@@ -232,21 +233,26 @@ public class QnaBoardServlet extends HttpServlet {
 			
 		} else if ("writeAns".equals(actionName)) {
 			
+			int qnano = Integer.parseInt(request.getParameter("qnaNo"));
+			int memno = Integer.parseInt(request.getParameter("memNo"));
 			String answer = request.getParameter("answer");
-			int memno = Integer.parseInt(request.getParameter("memno"));
 			
+			QnaAnswerVo vo = new QnaAnswerVo(qnano, memno, answer);
+			QnaAnswerDao dao = new QnaAnswerDaoImpl();
+			System.out.println(vo.toString());
+			
+			dao.insertAns(vo);
+			
+			WebUtil.redirect(request, response, "/mysiteB/qna?a=read&qnaNo="+qnano);
+			
+		} else if ("deleteAns".equals(actionName)) {
+			int ansNo = Integer.parseInt(request.getParameter("ansNo"));
+			int qnano = Integer.parseInt(request.getParameter("qnaNo"));
 			
 			QnaAnswerDao dao = new QnaAnswerDaoImpl();
+			dao.deleteAns(ansNo);
 			
-
-			//QnaAnswerVo vo = new QnaAnswerVo(nickname, password, title, type, content, priv);
-			//QnaAnswerdDao dao = new QnaBoardDaoImpl();
-			//dao.insert(vo);
-			//System.out.println(vo.toString());
-			
-			//dao.insertAns(answer);
-			
-			
+			WebUtil.redirect(request, response, "/mysiteB/qna?a=read&qnaNo="+qnano);
 
 		} else {
 			WebUtil.redirect(request, response, "/mysiteB/qna?a=list");

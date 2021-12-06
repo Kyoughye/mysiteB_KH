@@ -7,6 +7,23 @@ public class QnaAnswerVo {
 	private String answer;
 	private String regDate;
 	private int answerCk;
+	
+	
+	public QnaAnswerVo() {
+		super();
+	}
+	
+	
+	
+	public QnaAnswerVo(int qnaNo, int memNo, String answer) {
+		super();
+		this.qnaNo = qnaNo;
+		this.memNo = memNo;
+		this.answer = answer;
+	}
+
+
+
 	public int getAnsNo() {
 		return ansNo;
 	}
