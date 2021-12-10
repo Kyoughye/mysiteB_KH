@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.javaex.vo.QnaAnswerVo;
+import com.javaex.vo.QnaBoardVo;
 
 public class QnaAnswerDaoImpl implements QnaAnswerDao {
 
@@ -15,7 +16,7 @@ public class QnaAnswerDaoImpl implements QnaAnswerDao {
 	    Connection conn = null;
 	    try {
 	      Class.forName("oracle.jdbc.driver.OracleDriver");
-	      String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
+	      String dburl = "jdbc:oracle:thin:@3.38.190.21:1521:xe";
 	      conn = DriverManager.getConnection(dburl, "mysiteB", "1234");
 	    } catch (ClassNotFoundException e) {
 	      System.err.println("JDBC 드라이버 로드 실패!"); 

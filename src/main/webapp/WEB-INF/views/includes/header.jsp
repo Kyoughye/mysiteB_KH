@@ -40,7 +40,7 @@
 					<a href="/mysiteB/main" class="logo"><strong>shopping
 							mall</strong> <span>by B team</span></a>
 					<nav>
-						<a href="/mysiteB/user?a=mypage&no=${authUser.memId }">${authUser.memName }ดิ</a>
+						<a href="/mysiteB/user?a=mypage&memNo=${authUser.memNo }">${authUser.memName }ดิ</a>
 						<a href="#menu">Menu</a>
 					</nav>
 				</header>

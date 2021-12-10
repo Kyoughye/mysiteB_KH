@@ -14,7 +14,7 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 	    Connection conn = null;
 	    try {
 	      Class.forName("oracle.jdbc.driver.OracleDriver");
-	      String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
+	      String dburl = "jdbc:oracle:thin:@3.38.190.21:1521:xe";
 	      conn = DriverManager.getConnection(dburl, "mysiteB", "1234");
 	    } catch (ClassNotFoundException e) {
 	      System.err.println("JDBC 드라이버 로드 실패!"); 
@@ -161,6 +161,7 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 				 vo.setRegDate(rs.getString("regdate"));
 				 vo.setPriv(rs.getInt("priv"));
 				 vo.setQnabCk(rs.getInt("qnabck"));
+				 vo.setAnsCnt(getAnsCnt(rs.getInt("qnano")));
 				 
 				 list.add(vo);
 			 }
@@ -177,7 +178,8 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 		 }
 		
 		return list;
-	}
+		
+	} 
 
 	@Override
 	public int getBoardCount() {
@@ -326,6 +328,398 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 		 }
 		return count;
 	}
+
+
+
+	public int getAnsCnt(int qnano) {
+			Connection conn = null;
+			 PreparedStatement pstmt = null;
+			 ResultSet rs = null;
+			 ArrayList<QnaBoardVo> list = new ArrayList<QnaBoardVo>();
+			 int count = 0;
+			 
+			 try {
+				 conn = getConnection();
+				 
+				 String query = "select count(ansno) "
+				 		+ " from qnaanswer"
+				 		+ " where qnano =  " + qnano ; 
+						 
+				 pstmt = conn.prepareStatement(query);
+							 
+				 rs = pstmt.executeQuery();
+				 
+				 if(rs.next()) {
+					 count = rs.getInt("count(ansno)");
+				 }
+					 			 
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+			 }finally {
+				 try {
+					 if(pstmt != null) pstmt.close();
+					 if(conn != null) conn.close();
+				 } catch (SQLException e) {
+					 System.out.println("error:" + e);
+					 
+				 }
+			 }
+			
+			return count;
+			
+		}
+	
+	
+
+	@Override
+	public ArrayList<QnaBoardVo> getNoAnswerList(int page) {
+		 Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 ArrayList<QnaBoardVo> list = new ArrayList<QnaBoardVo>();
+		 
+		 try {
+			 conn = getConnection();
+			 
+			 String query = "select qna.* "
+			 		+ "from( "
+			 		+ "select rownum num, qn.* "
+			 		+ "from (select q.*, m.memName "
+			 		+ "from noansqna_view q, regmember m "
+			 		+ "where q.memno = m.memno "
+			 		+ "order by qnano desc) qn) qna "
+			 		+ "where num between ? and ? ";
+
+			 pstmt = conn.prepareStatement(query);
+			 pstmt.setInt(1, 1+(page-1)*5 );
+			 pstmt.setInt(2, page*5);
+			 
+	 
+			 rs = pstmt.executeQuery();
+			 
+			 while(rs.next()) {
+				 QnaBoardVo vo = new QnaBoardVo();
+				 
+				 vo.setQnaNo(rs.getInt("qnano"));
+				 vo.setMemNo(rs.getInt("memno"));
+				 vo.setMemName(rs.getString("memname"));
+				 vo.setNickname(rs.getString("nickname"));
+				 vo.setPass(rs.getString("pass"));
+				 vo.setTitle(rs.getString("title"));
+				 vo.setType(rs.getString("type"));
+				 vo.setContent(rs.getString("content"));
+				 vo.setRegDate(rs.getString("regdate"));
+				 vo.setPriv(rs.getInt("priv"));
+				 vo.setQnabCk(rs.getInt("qnabck"));
+				 vo.setAnsCnt(getAnsCnt(rs.getInt("qnano")));
+				 
+				 list.add(vo);
+				 }
+			
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		
+		return list;
+
+	}
+	
+	@Override
+	public int getNoAnswerCount() {
+		Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 ArrayList<QnaBoardVo> list = new ArrayList<QnaBoardVo>();
+		 int count = 0;
+		 
+		 try {
+			 conn = getConnection();
+			 String query = "select count(*) from( "
+			 		+ "select count(qa.qnano) counta "
+			 		+ "from (select q.* from qnaboard q where q.qnabck = 1 ) qb  "
+			 		+ "left join qnaanswer qa "
+			 		+ "on qa.qnano = qb.qnano "
+			 		+ "group by qb.qnano) "
+			 		+ "where counta = 0 ";
+					 
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			 
+			if(rs.next()) {
+				 count = rs.getInt("count(*)");
+			 }
+				 			 
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		
+		return count;
+	}
+
+
+	@Override
+	public QnaBoardVo prevQna(int qnaNo) {
+		 Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 QnaBoardVo vo = new QnaBoardVo();
+		 
+		 try {
+			 conn = getConnection();
+			 String query = "select pre_qnano, pre_title, pre_type, pre_regdate "
+			 		+ "from ( "
+			 		+ "select qnano, title, type, regdate, "
+			 		+ "lag(qnano) over (order by qnano) pre_qnano, "
+			 		+ "lag(title) over (order by qnano) pre_title, "
+			 		+ "lag(type) over (order by qnano) pre_type, "
+			 		+ "lag(regdate) over (order by qnano) pre_regdate "
+			 		+ "from qnaboard "
+			 		+ "where qnabck=1 "
+			 		+ "order by qnano) "
+			 		+ "where qnano = ?";
+					 
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, qnaNo);
+			rs = pstmt.executeQuery();
+			 
+			if(rs.next()) {
+				int pre_no = rs.getInt("pre_qnano");
+				String pre_title = rs.getString("pre_title");
+				String pre_type = rs.getString("pre_type");
+				String pre_regDate = rs.getString("pre_regDate");
+				vo = new QnaBoardVo(pre_no, pre_title, pre_type,  pre_regDate);
+			 }
+				 			 
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		 
+		return vo;
+	}
+
+	@Override
+	public QnaBoardVo nextQna(int qnaNo) {
+		 Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 QnaBoardVo vo = new QnaBoardVo();
+		 
+		 try {
+			 conn = getConnection();
+			 String query = "select next_qnano, next_title, next_type, next_regdate "
+			 		+ "from ( "
+			 		+ "select qnano, title, type, regdate, "
+			 		+ "lead(qnano) over (order by qnano) next_qnano, "
+			 		+ "lead(title) over (order by qnano) next_title, "
+			 		+ "lead(type) over (order by qnano) next_type, "
+			 		+ "lead(regdate) over (order by qnano) next_regdate "
+			 		+ "from qnaboard "
+			 		+ "where qnabck=1 "
+			 		+ "order by qnano) "
+			 		+ "where qnano = ? ";
+					 
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, qnaNo);
+			rs = pstmt.executeQuery();
+			 
+			if(rs.next()) {
+				int next_qnano = rs.getInt("next_qnano");
+				String next_title = rs.getString("next_title");
+				String next_type = rs.getString("next_type");
+				String next_regDate = rs.getString("next_regDate");
+				vo = new QnaBoardVo(next_qnano , next_title, next_type, next_regDate);
+			 }
+				 			 
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		 
+		return vo;
+	}
+
+
+	@Override
+	public QnaBoardVo prevNoAnsQna(int qnaNo) {
+		Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 QnaBoardVo vo = new QnaBoardVo();
+		 
+		 try {
+			 conn = getConnection();
+			 String query = "select pre_qnano, pre_title, pre_type, pre_regdate "
+			 		+ "from ( "
+			 		+ "select qnano, title, type, regdate, "
+			 		+ "lag(qnano) over (order by qnano) pre_qnano, "
+			 		+ "lag(title) over (order by qnano) pre_title, "
+			 		+ "lag(type) over (order by qnano) pre_type, "
+			 		+ "lag(regdate) over (order by qnano) pre_regdate "
+			 		+ "from noansqna_view "
+			 		+ "where qnabck=1 "
+			 		+ "order by qnano) "
+			 		+ "where qnano = ? ";
+					 
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, qnaNo);
+			rs = pstmt.executeQuery();
+			 
+			if(rs.next()) {
+				int pre_no = rs.getInt("pre_qnano");
+				String pre_title = rs.getString("pre_title");
+				String pre_type = rs.getString("pre_type");
+				String pre_regDate = rs.getString("pre_regDate");
+				vo = new QnaBoardVo(pre_no, pre_title, pre_type,  pre_regDate);
+			 }
+				 			 
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		 
+		return vo;
+	}
+
+
+	@Override
+	public QnaBoardVo nextNoAnsQna(int qnaNo) {
+		Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 QnaBoardVo vo = new QnaBoardVo();
+		 
+		 try {
+			 conn = getConnection();
+			 String query = "select next_qnano, next_title, next_type, next_regdate "
+			 		+ "from ( "
+			 		+ "select qnano, title, type, regdate, "
+			 		+ "lead(qnano) over (order by qnano) next_qnano, "
+			 		+ "lead(title) over (order by qnano) next_title, "
+			 		+ "lead(type) over (order by qnano) next_type, "
+			 		+ "lead(regdate) over (order by qnano) next_regdate "
+			 		+ "from noansqna_view "
+			 		+ "where qnabck=1 "
+			 		+ "order by qnano) "
+			 		+ "where qnano = ? ";
+					 
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, qnaNo);
+			rs = pstmt.executeQuery();
+			 
+			if(rs.next()) {
+				int next_qnano = rs.getInt("next_qnano");
+				String next_title = rs.getString("next_title");
+				String next_type = rs.getString("next_type");
+				String next_regDate = rs.getString("next_regDate");
+				vo = new QnaBoardVo(next_qnano , next_title, next_type, next_regDate);
+			 }
+				 			 
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		 
+		return vo;
+	}
+
+
+	@Override
+	public ArrayList<QnaBoardVo> getNoAnswerL() {
+		Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 ArrayList<QnaBoardVo> list = new ArrayList<QnaBoardVo>();
+		 
+		 try {
+			 conn = getConnection();
+			 
+			 String query = "select qna.* "
+			 		+ "from( "
+			 		+ "select rownum num, qn.* "
+			 		+ "from (select q.*, m.memName "
+			 		+ "from noansqna_view q, regmember m "
+			 		+ "where q.memno = m.memno "
+			 		+ "order by qnano desc) qn) qna "
+			 		+ "where num between 1 and 3 ";
+
+			 pstmt = conn.prepareStatement(query);
+			 rs = pstmt.executeQuery();
+			 
+			 while(rs.next()) {
+				 QnaBoardVo vo = new QnaBoardVo();
+				 
+				 vo.setQnaNo(rs.getInt("qnano"));
+				 vo.setMemNo(rs.getInt("memno"));
+				 vo.setMemName(rs.getString("memname"));
+				 vo.setNickname(rs.getString("nickname"));
+				 vo.setTitle(rs.getString("title"));
+				 vo.setType(rs.getString("type"));
+				 vo.setRegDate(rs.getString("regdate"));
+				 
+				 list.add(vo);
+				 }
+			
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		
+		return list;
+
+	}
+
 
 
 }

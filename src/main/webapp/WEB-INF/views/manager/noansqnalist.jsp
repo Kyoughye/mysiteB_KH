@@ -28,26 +28,9 @@
 			<section id="one">
 				<div class="inner">
 					<header class="major">
-						<h1>문의하세요</h1>
+						<h1>미답변 문의글</h1>
 					</header>
 					
-					
-					<label class="actions" align:right>
-						<a href="/mysiteB/qna?a=writeform" class="button primary">문의글 남기기</a>
-					</label>
-					
-					<form id="search_form" action="/mysiteB/qna" method="post">
-					<input type = "hidden" name = "a" value="list">
-					<label class="hidden">검색 분류</label>
-					<select name="t" style="width:200px;height:50px;" >
-						<option ${param.t == "전체 문의"?"selected":"" } value="전체 문의">전체 문의</option>
-						<option ${param.t == "회원 문의"?"selected":"" } value="회원 문의">회원 문의</option>
-						<option ${param.t == "결제 문의"?"selected":"" } value="결제 문의">결제 문의</option>
-						<option ${param.t == "배송 문의"?"selected":"" } value="배송 문의">배송 문의</option>
-						<option ${param.t == "기타 문의"?"selected":"" } value="기타 문의">기타 문의</option>
-					</select>				
-						<input type="submit" value="검색">
-					</form>
 
 
 					<div class="table-wrapper">
@@ -74,36 +57,8 @@
 											<td>공개</td>
 										</c:if>
 										
-										<c:if test="${vo.priv == 0 && authUser.adminCk != 1 }">
-										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}
-											<c:if test="${ vo.ansCnt!=0 && vo.ansCnt!=null }">
-											<span>[답변완료]</span>
-											</c:if>
-										</a></td>
-										</c:if>
 										
-										<c:if test="${(vo.priv == 1 && vo.memNo == authUser.memNo && vo.memNo != 0) || authUser.adminCk == 1 }">
-										<td><a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title}
-										<c:if test="${ vo.ansCnt!=0 && vo.ansCnt!=null }">
-											<span>[답변완료]</span>
-										</c:if>
-										</a></td>
-										</c:if>
-										
-										<c:if test="${(vo.priv == 1 && vo.memNo != authUser.memNo && vo.memNo != 0) && authUser.adminCk != 1  }">
-										<td>${vo.title}
-											<c:if test="${ vo.ansCnt!=0 && vo.ansCnt!=null }">
-											<span>[답변완료]</span>
-											</c:if></td>
-										</c:if>
-										
-										<c:if test="${(vo.priv == 1 && vo.memNo == 0) && authUser.adminCk != 1  }">
-										<td><a href="/mysiteB/qna?a=checkpassform&qnaNo=${vo.qnaNo}">${vo.title}
-											<c:if test="${ vo.ansCnt!=0 && vo.ansCnt!=null }">
-											<span>[답변완료]</span>
-											</c:if>
-										</a></td>
-										</c:if>
+										<td><a href="/mysiteB/qna?a=readNoAnswer&qnaNo=${vo.qnaNo}">${vo.title}</a></td>
 										
 										<c:if test="${vo.memNo != 0 }">
 										<td>${vo.memName}</td>
@@ -134,16 +89,16 @@
 				<ul class="-list- center">
 					
 						<c:if test="${startNum>1 }">
-							<a class="btn btn-prev" href="/mysiteB/qna?a=list&p=${startNum-1 }&t=${param.t}}">◀</a>
+							<a class="btn btn-prev" href="/mysiteB/qna?a=listNoAnswer&p=${startNum-1 }&t=${param.t}}">◀</a>
 						</c:if>
 						<c:forEach var="i" begin="0" end="4">
 						<c:if test="${(startNum+i) <= lastNum}">	
-							<a class="${(param.p==(startNum+i))?'selected':'' }"></a><a href="/mysiteB/qna?a=list&p=${startNum+i}&t=${param.t}">${startNum+i}</a>						
+							<a class="${(param.p==(startNum+i))?'selected':'' }"></a><a href="/mysiteB/qna?a=listNoAnswer&p=${startNum+i}&t=${param.t}">${startNum+i}</a>						
 						</c:if>
 						</c:forEach>
 						
 						<c:if test="${startNum+4<lastNum }">
-							<a href="/mysiteB/qna?a=list&p=${startNum+5}&t=${param.t}"class="btn btn-next">▶</a>
+							<a href="/mysiteB/qna?a=listNoAnswer&p=${startNum+5}&t=${param.t}"class="btn btn-next">▶</a>
 						</c:if>
 				</ul>
 			</div>

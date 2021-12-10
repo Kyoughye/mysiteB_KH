@@ -1,9 +1,7 @@
 package com.javaex.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,9 +13,12 @@ import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.MemberDao;
 import com.javaex.dao.MemberDaoImpl;
+import com.javaex.dao.QnaBoardDao;
+import com.javaex.dao.QnaBoardDaoImpl;
 import com.javaex.util.WebUtil;
 import com.javaex.vo.MemberVo;
 import com.javaex.vo.OrderInfoVo;
+import com.javaex.vo.QnaBoardVo;
 
 
 @WebServlet("/user")
@@ -111,17 +112,16 @@ public class MemberServlet extends HttpServlet {
 			
 			WebUtil.redirect(request, response, "/mysiteB/main");
 			
-		} else if ("mypage".equals(actionName)) {
-			WebUtil.forward(request, response, "/WEB-INF/views/member/mypageform.jsp");
+		
 		} else if ("admin".equals(actionName)) {
 			WebUtil.forward(request, response, "/WEB-INF/views/admin/adminMain.jsp");
 			
 			
 		
-		} else if ("mypage".equals(actionName)) {
+		} else if ("mypae".equals(actionName)) {
 			
 			MemberVo authUser = getAuthUser(request);
-			int no = Integer.parseInt(request.getParameter("memNo"));
+			int no = authUser.getMemNo();
 
 			MemberDao dao = new MemberDaoImpl();
 			
@@ -133,7 +133,29 @@ public class MemberServlet extends HttpServlet {
 			request.setAttribute("list", list);
 			
 			
-			WebUtil.forward(request, response, "/WEB-INF/views/member/mypageform.jsp");
+			WebUtil.forward(request, response, "/WEB-INF/views/user/mypageform.jsp");
+			
+		} else if ("mypage".equals(actionName)) {
+			
+			MemberVo authUser = getAuthUser(request);
+			int no = authUser.getMemNo();
+
+			MemberDao dao = new MemberDaoImpl();
+			ArrayList<OrderInfoVo> list = dao.getList(no);
+			
+			QnaBoardDao qdao = new QnaBoardDaoImpl();
+			int count = qdao.getNoAnswerCount();
+			System.out.println(count);
+			
+			ArrayList<QnaBoardVo> qblist = qdao.getNoAnswerL();
+			
+			request.setAttribute("qblist", qblist);
+			request.setAttribute("list", list);
+			request.setAttribute("noanswercount", count);
+			
+			
+			
+			WebUtil.forward(request, response, "/WEB-INF/views/manager/manage.jsp");	
 			
 			
 		} else if ("orderlist".equals(actionName)) {

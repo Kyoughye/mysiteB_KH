@@ -36,7 +36,7 @@
 					
 							<div class="col-6 col-12-small">
 								<ul class="actions stacked">
-									<li style="text-align: right"><a href="/mysiteB/qna?a=list"
+									<li style="text-align: right"><a href="/mysiteB/qna?a=listNoAnswer"
 										class="button small">목록으로</a></li>
 								</ul>
 							</div>
@@ -66,7 +66,7 @@
 											<th></th>
 										</c:when>
 										<c:otherwise>
-											<th><a href="/mysiteB/qna?a=read&qnaNo=${nextVo.qnaNo }">${nextVo.title }</a></th>
+											<th><a href="/mysiteB/qna?a=readNoAnswer&qnaNo=${nextVo.qnaNo }">${nextVo.title }</a></th>
 											<th>${nextVo.type }</th>
 											<th>${nextVo.regDate }</th>
 										</c:otherwise>

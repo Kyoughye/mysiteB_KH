@@ -12,9 +12,19 @@ public class QnaBoardVo {
 	private String regDate;
 	private int priv;
 	private int qnabCk;
+	private int ansCnt;
+	
+	
 
 	
 	
+	public int getAnsCnt() {
+		return ansCnt;
+	}
+	public void setAnsCnt(int ansCnt) {
+		this.ansCnt = ansCnt;
+		
+	}
 	public int getQnabCk() {
 		return qnabCk;
 	}
@@ -137,6 +147,16 @@ public class QnaBoardVo {
 		this.content = content;
 		this.priv = priv;
 	}
+	
+	
+	public QnaBoardVo(int qnaNo, String title, String type, String regDate) {
+		super();
+		this.qnaNo = qnaNo;
+		this.title = title;
+		this.type = type;
+		this.regDate = regDate;
+	}
+	
 	@Override
 	public String toString() {
 		return "QnaBoardVo [qnaNo=" + qnaNo + ", memNo=" + memNo + ", memName=" + memName + ", nickname=" + nickname
