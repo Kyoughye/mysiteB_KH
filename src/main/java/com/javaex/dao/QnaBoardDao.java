@@ -19,5 +19,9 @@ public interface QnaBoardDao {
 	public QnaBoardVo nextQna(int qnaNo);
 	public QnaBoardVo prevNoAnsQna(int qnaNo);
 	public QnaBoardVo nextNoAnsQna(int qnaNo);
+	public ArrayList<QnaBoardVo> getMyQList(int memno, int page);
+	//public ArrayList<QnaBoardVo> getMyPqList(int page);
+	
+	
 
 }

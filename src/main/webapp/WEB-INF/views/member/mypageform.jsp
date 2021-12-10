@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
@@ -33,7 +33,7 @@
 			<section id="one">
 				<div class="inner">
 					<header class="major">
-						<h1>³» Á¤º¸</h1>
+						<h1>ë‚´ ì •ë³´</h1>
 					</header>
 
 					<hr class="major" />
@@ -56,13 +56,14 @@
 
 
 									<ul class="alt">
-										<li><a href="/mysiteB/orderInfo?a=list&memNo=${authUser.memNo}">ÁÖ¹® ³»¿ª Á¶È¸</a></li>
-										<li><a href="/mysiteB/user?a=wishform">ÂòÇÑ »óÇ° ¸ñ·Ï</a></li>
-										<li><a href="/mysiteB/user?a=coupon">ÄíÆù</a></li>
-										<li><a href="#">Àû¸³±Ý Á¶È¸</a></li>
-										<li><a href="/mysiteB/user?a=review">³»°¡ ¾´ ±Û º¸±â</a></li>
-										<li><a href="/mysiteB/user?a=modifyform">È¸¿ø Á¤º¸ ¼öÁ¤</a></li>
-										<li><a href="/mysiteB/user?a=deleteform">È¸¿ø Å»Åð</a></li>
+										<li><a href="/mysiteB/orderInfo?a=list&memNo=${authUser.memNo}">ì£¼ë¬¸ ë‚´ì—­ ì¡°íšŒ</a></li>
+										<li><a href="/mysiteB/user?a=wishform">ì°œí•œ ìƒí’ˆ ëª©ë¡</a></li>
+										<li><a href="/mysiteB/user?a=coupon">ì¿ í°</a></li>
+										<li><a href="#">ì ë¦½ê¸ˆ ì¡°íšŒ</a></li>
+										<li><a href="/mysiteB/user?a=review">ë¦¬ë·° ê´€ë¦¬</a></li>
+										<li><a href="/mysiteB/user?a=readmyq">ë‚˜ì˜ ë¬¸ì˜</a></li>
+										<li><a href="/mysiteB/user?a=modifyform">íšŒì› ì •ë³´ ìˆ˜ì •</a></li>
+										<li><a href="/mysiteB/user?a=deleteform">íšŒì› íƒˆí‡´</a></li>
 									</ul>
 
 								</div>
@@ -74,13 +75,13 @@
 
 						<div class="col-6 col-12-medium">
 
-							<h4>ÃÖ±Ù ÁÖ¹® ³»¿ª</h4>
+							<h4>ìµœê·¼ ì£¼ë¬¸ ë‚´ì—­</h4>
 							<div class="table-wrapper">
 								<table>
 									<thead>
 										<tr>
-											<th>ÁÖ¹®ÀÏ</th>
-											<th>°¡°Ý</th>
+											<th>ì£¼ë¬¸ì¼</th>
+											<th>ê°€ê²©</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -116,23 +117,23 @@
 							<div class="row">
 											<!-- Break -->
 											<div class="col-4 col-12-medium">
-												<h3>ÀÔ±Ý Àü</h3>
+												<h3>ìž…ê¸ˆ ì „</h3>
 												<h4>0</h4>
 											</div>
 											<div class="col-4 col-12-medium">
-												<h3>ÀÔ±Ý</h3>
+												<h3>ìž…ê¸ˆ</h3>
 												<h4>0</h4>
 											</div>
 											<div class="col-4 col-12-medium">
-												<h3>¹è¼Û ÁØºñ</h3>
+												<h3>ë°°ì†¡ ì¤€ë¹„</h3>
 												<h4>0</h4>
 											</div>
 											<div class="col-4 col-12-medium">
-												<h3>¹è¼Û Áß</h3>
+												<h3>ë°°ì†¡ ì¤‘</h3>
 												<h4>0</h4>
 											</div>
 											<div class="col-4 col-12-medium">
-												<h3>¹è¼Û ¿Ï·á</h3>
+												<h3>ë°°ì†¡ ì™„ë£Œ</h3>
 												<h4>0</h4>
 											</div>
 										</div>

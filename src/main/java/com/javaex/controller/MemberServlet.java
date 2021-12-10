@@ -2,6 +2,7 @@ package com.javaex.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import com.javaex.dao.QnaBoardDaoImpl;
 import com.javaex.util.WebUtil;
 import com.javaex.vo.MemberVo;
 import com.javaex.vo.OrderInfoVo;
+import com.javaex.vo.QnaAnswerVo;
 import com.javaex.vo.QnaBoardVo;
 
 
@@ -118,7 +120,7 @@ public class MemberServlet extends HttpServlet {
 			
 			
 		
-		} else if ("mypae".equals(actionName)) {
+		} else if ("mypage".equals(actionName)) {
 			
 			MemberVo authUser = getAuthUser(request);
 			int no = authUser.getMemNo();
@@ -133,9 +135,9 @@ public class MemberServlet extends HttpServlet {
 			request.setAttribute("list", list);
 			
 			
-			WebUtil.forward(request, response, "/WEB-INF/views/user/mypageform.jsp");
+			WebUtil.forward(request, response, "/WEB-INF/views/member/mypageform.jsp");
 			
-		} else if ("mypage".equals(actionName)) {
+		} else if ("mypae".equals(actionName)) {
 			
 			MemberVo authUser = getAuthUser(request);
 			int no = authUser.getMemNo();
@@ -265,8 +267,20 @@ public class MemberServlet extends HttpServlet {
 		}else if ("coupon".equals(actionName)) {
 			WebUtil.forward(request, response, "/WEB-INF/views/member/coupon.jsp");
 			
-		}else if ("review".equals(actionName)) {
-			WebUtil.forward(request, response, "/WEB-INF/views/member/review.jsp");
+		}else if ("readmyq".equals(actionName)) {
+			HttpSession session = request.getSession();
+			MemberVo authUser = (MemberVo)session.getAttribute("authUser");
+            int no = authUser.getMemNo();
+            
+            QnaBoardDao dao = new QnaBoardDaoImpl();
+            //page를 받아오게(1대신에)
+            ArrayList<QnaBoardVo> qlist = dao.getMyQList(no, 1);
+			
+            request.setAttribute("qlist", qlist);
+			
+			
+			
+			WebUtil.forward(request, response, "/WEB-INF/views/member/myqna.jsp");
 			
 		}else {
 //		 System.out.println("actionName => " + actionName);

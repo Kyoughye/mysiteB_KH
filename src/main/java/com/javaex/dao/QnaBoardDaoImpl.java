@@ -670,7 +670,7 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 
 	@Override
 	public ArrayList<QnaBoardVo> getNoAnswerL() {
-		Connection conn = null;
+		 Connection conn = null;
 		 PreparedStatement pstmt = null;
 		 ResultSet rs = null;
 		 ArrayList<QnaBoardVo> list = new ArrayList<QnaBoardVo>();
@@ -699,6 +699,63 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 				 vo.setNickname(rs.getString("nickname"));
 				 vo.setTitle(rs.getString("title"));
 				 vo.setType(rs.getString("type"));
+				 vo.setRegDate(rs.getString("regdate"));
+				 
+				 list.add(vo);
+				 }
+			
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		
+		return list;
+
+	}
+
+
+	@Override
+	public ArrayList<QnaBoardVo> getMyQList(int memno, int page) {
+		 Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 ArrayList<QnaBoardVo> list = new ArrayList<QnaBoardVo>();
+		 
+		 try {
+			 conn = getConnection();
+			 
+			 String query = "select qn.* "
+			 		+ "from( "
+			 		+ "select rownum num, q.* "
+			 		+ "from "
+			 		+ "(select * "
+			 		+ "from qnaboard q "
+			 		+ "where q.qnabck = 1 "
+			 		+ "and q.memno = ? "
+			 		+ "order by qnano desc)q)qn "
+			 		+ "where num between ? and ?";
+
+			 pstmt = conn.prepareStatement(query);
+			 pstmt.setInt(1, memno);
+			 pstmt.setInt(2, 1+(page-1)*5 );
+			 pstmt.setInt(3, page*5);
+			 rs = pstmt.executeQuery();
+			 
+			 while(rs.next()) {
+				 QnaBoardVo vo = new QnaBoardVo();
+				 
+				 vo.setQnaNo(rs.getInt("qnano"));
+				 vo.setMemNo(rs.getInt("memno"));
+				 vo.setTitle(rs.getString("title"));
+				 vo.setType(rs.getString("type"));
+				 vo.setContent(rs.getString("content"));
 				 vo.setRegDate(rs.getString("regdate"));
 				 
 				 list.add(vo);

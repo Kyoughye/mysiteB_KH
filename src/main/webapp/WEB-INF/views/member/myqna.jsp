@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML>
 <!--
@@ -30,36 +30,64 @@
 			<section id="one">
 				<div class="inner">
 					<header class="major">
-						<h1>≥ª∞° æ¥ »ƒ±‚</h1>
+						<h1>ÎÇ¥Í∞Ä Ïì¥ Î¨∏Ïùò</h1>
 					</header>
 
 
-
-					<div class="table-wrapper">
-						<table>
-							<thead>
-								<tr>
-									<th>π¯»£</th>
-									<th>∫–∑˘</th>
-									<th>¡¶∏Ò</th>
-									<th>¿€º∫¿œ</th>
-									<th>¡∂»∏</th>
-								</tr>
-							</thead>
-							<tbody>
+					<div class="row">
+								<div class="col-6 col-12-small">
+									<h4>ÏùºÎ∞ò Î¨∏Ïùò</h4>
+									<section class="split">
+									<c:forEach items="${qlist }" var="vo">
+										<section>
+											<div class="contact-method" style="margin:0">
+												<span class="icon solid alt"><img src="images/ÏÇ¨Îûå.png"
+													alt="" style="max-width: 2em; height: auto;" /></span>
+												<h6 style="margin:0">
+													[${vo.type}]<a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title }</a><br>${vo.memName }&nbsp&nbsp${vo.regDate }
+												</h6>
+											</div>
+										</section>
+										<hr class="major" style="margin: 20px 0"/>
+									</c:forEach>	
+									</section>
+								</div>
 								
-								<tr>
-									<form class="form-signin" id="orderlist-form" name="reviewform"
-										method="get" action="/mysiteB/user">
-										<input type="hidden" name="a" value="review" /> 
-										<input type="hidden" name="no" value="${authUser.memId}" />
+								
+								
+								
+								<div class="col-6 col-12-small">
+									<h4>ÏÉÅÌíà Î¨∏Ïùò</h4>
+									<section class="split">
+										<section>
+											<div class="contact-method" style="margin:0; padding:0">
+												<h6 style="margin:0">
+													<a href="">Ï†úÎ™©</a><br>Í¥ÄÎ¶¨Ïûê&nbsp&nbsp2021.11.15
+												</h6>
+											</div>
+										</section>
+										
+										<hr class="major" style="margin: 20px 0"/>
+										<section>
+											<div class="contact-method" style="margin:0; padding:0">
+												<h6 style="margin:0">
+													<a href="">Ï†úÎ™©</a><br>Í¥ÄÎ¶¨Ïûê&nbsp&nbsp2021.11.15
+												</h6>
+											</div>
+										</section>
+										<hr class="major" style="margin: 20px 0"/>
+										<section>
+											<div class="contact-method" style="margin:0; padding:0">
+												<h6 style="margin:0">
+													<a href="">Ï†úÎ™©</a><br>Í¥ÄÎ¶¨Ïûê&nbsp&nbsp2021.11.15
+												</h6>
+											</div>
+										</section>
+										<hr class="major" style="margin: 20px 0"/>
+									</section>
+								</div>
 
-
-									</form>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+							</div>
 
 
 					<!-- Elements -->
