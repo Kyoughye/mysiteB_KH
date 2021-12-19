@@ -137,7 +137,7 @@ public class MemberServlet extends HttpServlet {
 			
 			WebUtil.forward(request, response, "/WEB-INF/views/member/mypageform.jsp");
 			
-		} else if ("mypae".equals(actionName)) {
+		} else if ("manage".equals(actionName)) {
 			
 			MemberVo authUser = getAuthUser(request);
 			int no = authUser.getMemNo();

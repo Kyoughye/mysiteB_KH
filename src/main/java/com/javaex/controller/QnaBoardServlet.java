@@ -77,6 +77,27 @@ public class QnaBoardServlet extends HttpServlet {
 			request.setAttribute("count", count);
 			WebUtil.forward(request, response, "/WEB-INF/views/manager/noansqnalist.jsp");
 			
+		} else if ("listmyqna".equals(actionName)){
+			
+			MemberVo authUser = getAuthUser(request);
+			int memno = authUser.getMemNo();
+			String pag = request.getParameter("p");
+			
+			int page = 1;
+			if(pag != null && !pag.equals("")) {
+				page = Integer.parseInt(pag);
+			}
+			System.out.println(pag);
+			System.out.println(page);
+			QnaBoardDao dao = new QnaBoardDaoImpl();
+			List<QnaBoardVo> list = dao.getMyQList(memno, page);
+			int count = dao.getMyQCount(memno);
+			
+			request.setAttribute("list", list);
+			request.setAttribute("count", count);
+			WebUtil.forward(request, response, "/WEB-INF/views/member/myqnalist.jsp");
+			
+			
 
 		} else if ("read".equals(actionName)) {
 			// 게시물 가져오기

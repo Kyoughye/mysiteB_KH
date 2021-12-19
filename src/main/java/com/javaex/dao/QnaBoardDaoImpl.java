@@ -778,5 +778,46 @@ public class QnaBoardDaoImpl implements QnaBoardDao {
 	}
 
 
+	@Override
+	public int getMyQCount(int memno) {
+		Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 ResultSet rs = null;
+		 ArrayList<QnaBoardVo> list = new ArrayList<QnaBoardVo>();
+		 int count = 0;
+		 
+		 try {
+			 conn = getConnection();
+			 
+				 
+			String query = "select count(qnano) "
+							+ "from qnaboard "
+							+ "where qnabck=1 "
+							+ "and memno=? ";
+					 
+			 pstmt = conn.prepareStatement(query);
+			 pstmt.setInt(1, memno );			 
+			 rs = pstmt.executeQuery();
+			 
+			 if(rs.next()) {
+				 count = rs.getInt("count(qnano)");
+			 }
+				 			 
+		 } catch (SQLException e) {
+			 System.out.println("error:" + e);
+		 }finally {
+			 try {
+				 if(pstmt != null) pstmt.close();
+				 if(conn != null) conn.close();
+			 } catch (SQLException e) {
+				 System.out.println("error:" + e);
+				 
+			 }
+		 }
+		
+		return count;
+	}
+
+
 
 }

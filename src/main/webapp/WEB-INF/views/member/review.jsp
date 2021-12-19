@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.*"%>
 <!DOCTYPE HTML>
 <!--
 	Forty by HTML5 UP
@@ -15,6 +16,12 @@
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="assets/css/main.css" />
 <link rel="stylesheet" href="assets/css/noscript.css" />
+<%
+List reviewList = (List) request.getAttribute("revlist");
+int revpageNum = ((Integer) request.getAttribute("revpageNum")).intValue();
+int revtotal_page = ((Integer) request.getAttribute("revtotal_page")).intValue();
+int revtotal_record = ((Integer) request.getAttribute("revtotal_record")).intValue();
+%>
 </head>
 <body class="is-preload">
 
@@ -30,51 +37,48 @@
 			<section id="one">
 				<div class="inner">
 					<header class="major">
-						<h1>내가 쓴 문의</h1>
+						<h1>내가 쓴 후기</h1>
 					</header>
 
 
-					<div class="row">
-								<div class="col-6 col-12-small">
-									<h4><a href="/mysiteB/qna?a=listmyqna">일반 문의</a></h4>
-									<section class="split">
-									<c:forEach items="${qlist }" var="vo">
-										<section>
-											<div class="contact-method" style="margin:0">
-												<span class="icon solid alt"><img src="images/사람.png"
-													alt="" style="max-width: 2em; height: auto;" /></span>
-												<h6 style="margin:0">
-													[${vo.type}]<a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title }</a><br>${vo.memName }&nbsp&nbsp${vo.regDate }
-												</h6>
-											</div>
-										</section>
-										<hr class="major" style="margin: 20px 0"/>
-									</c:forEach>	
-									</section>
-								</div>
-								
-								
-								
-								
-								<div class="col-6 col-12-small">
-									<h4><a href="/mysiteB/qna?a=listmyqna">상품 문의</a></h4>
-									<section class="split">
-									<c:forEach items="${qlist }" var="vo">
-										<section>
-											<div class="contact-method" style="margin:0">
-												<span class="icon solid alt"><img src="images/사람.png"
-													alt="" style="max-width: 2em; height: auto;" /></span>
-												<h6 style="margin:0">
-													[${vo.type}]<a href="/mysiteB/qna?a=read&qnaNo=${vo.qnaNo}">${vo.title }</a><br>${vo.memName }&nbsp&nbsp${vo.regDate }
-												</h6>
-											</div>
-										</section>
-										<hr class="major" style="margin: 20px 0"/>
-									</c:forEach>	
-									</section>
-								</div>
 
-							</div>
+					<div class="table-wrapper">
+						<table>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>분류</th>
+									<th>제목</th>
+									<th>작성일</th>
+									<th>조회</th>
+								</tr>
+							</thead>
+							
+							<tbody>
+								<c:forEach items="${revlist}" var="revList">
+								<tr>
+									<td>${revlist.content}</td>
+									<td>${revlist.proNo}</td>
+									<th>${revlist.title}</th>
+									<th>${revlist.revdate}</th>
+									<th>${revlist.revHit}</th>
+									
+
+								</tr>
+								</c:forEach>
+								
+								<tr>
+									<form class="form-signin" id="orderlist-form" name="reviewform"
+										method="get" action="/mysiteB/user">
+										<input type="hidden" name="a" value="review" /> 
+										<input type="hidden" name="no" value="${authUser.memId}" />
+
+
+									</form>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
 
 					<!-- Elements -->
